@@ -1,0 +1,13 @@
+###################################################################
+problem:
+    i create new statefulset redis but slave pod ant sync with master pod :
+
+how i solved :
+    i use dns-pod.yaml and  create new pod and then check dns with these commands :
+        kubectl exec -i -t dnsutils -- nslookup kubernetes.default
+        kubectl exec -i -t dnsutils -- nslookup redis-0.service.namespace.svc.cluster.local
+
+    and you can resilve dns by these command , and i see these commands notresolved 
+    then i recreate statefulset service and then all thing be ok !
+
+#######################################################################
