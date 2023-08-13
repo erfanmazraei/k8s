@@ -11,3 +11,15 @@ how i solved :
     then i recreate statefulset service and then all thing be ok !
 
 #######################################################################
+
+problem :
+    i use curl binance.com in k8s node and i get response 
+    but in pod ,binance not resolved 
+
+how i solved:
+    i replace coredns configmap and put 185.225.168.168 instead of /etc/resolv.conf
+    you can see this configmap in : k8s/coredns/configmap.yaml
+    and use this command for replace this config map:
+        kubectl replace -n kube-system -f coredns_cm.yaml
+
+########################################################################
