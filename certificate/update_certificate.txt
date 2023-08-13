@@ -1,0 +1,8 @@
+renew / update certificate :
+
+# kubeadm certs check-expiration
+# kubeadm certs renew all
+# kubeadm certs check-expiration
+# kubectl delete pod -n kube-system -l component=kube-apiserver
+# kubectl delete pod -n kube-system -l component=kube-scheduler
+# kubectl delete pod -n kube-system -l component=kube-controller-manager
