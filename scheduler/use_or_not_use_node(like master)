@@ -1,0 +1,11 @@
+ # you can see what taints set for each node in cluster by this command :
+  kubectl get nodes -o custom-columns=NAME:.metadata.name,TAINTS:.spec.taints --no-headers
+
+# you must set these commands if you want no schedule any pod : 
+  kubectl taint node nodename node-role.kubernetes.io/control-plane:NoSchedule
+  kubectl taint node dev-master1 node-role.kubernetes.io/master:NoSchedule
+
+# you must set these commands if you want schedule any pod :
+  kubectl taint node nodename node-role.kubernetes.io/control-plane:NoSchedule-
+  kubectl taint node dev-master1 node-role.kubernetes.io/master:NoSchedule-
+
