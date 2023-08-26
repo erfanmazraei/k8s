@@ -1,0 +1,13 @@
+######################################################################################
+
+problem : 
+    i see this error after certificate expired and i renew certificate :
+        kubectl get nodes error: You must be logged in to the server (Unauthorized)
+
+how i solved :
+    mkdir -p $HOME/.kube
+    sudo cp -i /etc/kubernetes/admin.conf $HOME/.kube/config
+    sudo chown $(id -u):$(id -g) $HOME/.kube/config
+
+#######################################################################################
+
