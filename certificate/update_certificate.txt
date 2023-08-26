@@ -1,5 +1,5 @@
 renew / update certificate :
-
+# you must execute these commands in all masters node
 # kubeadm certs check-expiration
 # kubeadm certs renew all
 # kubeadm certs check-expiration
