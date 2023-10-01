@@ -1,0 +1,19 @@
+useradd -m -d /home/ubuntu ubuntu
+usermod --shell /bin/bash ubuntu
+sudo su ubuntu
+mkdir /home/ubuntu/.ssh
+touch /home/ubuntu/authorized_keys
+
+execte this command with root user :
+    echo "ubuntu ALL=(ALL) NOPASSWD:ALL" | sudo tee /etc/sudoers.d/ubuntu
+
+add your ansible vm ssh key to /home/ubuntu/authorized_keys 
+    vim /home/ubuntu/authorized_keys
+    service sshd restart
+
+for example we have 3 masters and 0 worker :
+    we set just workers node in inventory of kubespray
+    add then execute this command in kubespray directory in ansible node :
+        ansible-playbook -i inventory/mycluster/hosts.yaml --become --become-user=root cluster.yml -e kube_version=v1.24.0 -e ignore_assert_errors=yes
+        # https://www.linuxtechi.com/install-kubernetes-using-kubespray/
+
