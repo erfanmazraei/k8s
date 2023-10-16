@@ -1,3 +1,0 @@
-etcdctl snapshot restore /backup/k8s/etcd-snapshot.db \
---data-dir=/var/lib/etcd-from-backup \
---initial-cluster= 

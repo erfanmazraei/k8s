@@ -1,0 +1,6 @@
+etcdctl snapshot restore /backup/k8s/etcd-snapshot.db \
+--data-dir=/var/lib/etcd-from-backup \
+--initial-cluster= etcd01= kubemaster-1=https://192.168.100.11:2380,etcd02=http://<etcd02-ip>:2380 \
+--initial-advertise-peer-urls https://192.168.100.11:2380 (https://192.168.100.11:2380/) \
+--initial-cluster-token=<ETCD-initial-cluster-token> \
+--name=kubemaster-1
