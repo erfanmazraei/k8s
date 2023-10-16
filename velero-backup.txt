@@ -1,0 +1,12 @@
+velero backup create <backup-name>
+
+# for specific name space :
+    velero backup create <backup-name> --include-namespaces my-namespace \
+    --include-resources deployments.pods
+
+velero restore create --from-backup <backup-name>
+
+
+
+velero restore create --from-backup <backup-name> --include-namespaces my-namespace \
+--include-resources deployments.pods

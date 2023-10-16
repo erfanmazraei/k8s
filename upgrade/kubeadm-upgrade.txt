@@ -1,0 +1,41 @@
+step 1 : Prepare for the Upgrade
+    Before upgrading, it is important to review the release notes and documentation for the target Kubernetes version. Check for any specific requirements or considerations.
+    ETCDCTL_API=3 etcdctl snapshot save snapshot.db \
+    --endpoints=$ENDPOINTS \
+    --cacert=/etc/kubernetes/pki/etcd/ca.crt \
+    --cert=/etc/kubernetes/pki/etcd/server.crt \
+    --key=/etc/kubernetes/pki/etcd/server.key
+
+step 2 : Upgrade Control Plane Nodes
+
+    kubectl drain <control-plane-node-name> --ignore-daemonsets
+    sudo apt-mark unhold kubeadm
+    sudo apt-get upgrade -y kubeadm=1.26.7-00
+    sudo apt-mark hold kubeadm
+    sudo kubeadm upgrade plan 
+    sudo kubeadm upgrade apply v1.26.7
+    apt-mark unhold kubelet kubectl
+    sudo apt-get upgrade -y kubelet=1.26.7-00
+    sudo apt-get upgrade -y kubectl=1.26.7-00
+    sudo apt-mark hold kubelet kubectl
+    sudo systemctl daemon-reload
+    sudo systemctl restart kubelet
+    kubectl uncordon <control-plane-node-name>
+
+step 3 :
+    kubectl drain <worker-node-name> --ignore-daemonsets
+    apt-mark unhold kubeadm && \
+    apt-get update && apt-get install -y kubeadm=1.26.7-00 && \
+    apt-mark hold kubeadm
+
+    sudo kubeadm upgrade node
+
+    apt-mark unhold kubelet kubectl && \
+    apt-get update && \
+    apt-get install -y kubelet=1.27.x-00 && \
+    apt-get install -y kubectl=1.27.x-00 && \
+    apt-mark hold kubelet kubectl
+
+    sudo systemctl daemon-reload
+    sudo systemctl restart kubelet
+    kubectl uncordon <worker-node-name>
