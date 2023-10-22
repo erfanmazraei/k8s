@@ -9,31 +9,33 @@ step 1 : Prepare for the Upgrade
 step 2 : Upgrade Control Plane Nodes
 
     kubectl drain <control-plane-node-name> --ignore-daemonsets
+    curl -fsSL https://dl.k8s.io/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
+    apt update
     sudo apt-mark unhold kubeadm
-    sudo apt-get upgrade -y kubeadm=1.26.7-00
+    sudo apt-get upgrade -y kubeadm=1.25.12-00
     sudo apt-mark hold kubeadm
-    sudo kubeadm upgrade plan 
-    sudo kubeadm upgrade apply v1.26.7
+    sudo kubeadm upgrade plan
+    kubeadm config images pull
+    sudo kubeadm upgrade apply v1.25.12
     apt-mark unhold kubelet kubectl
-    sudo apt-get upgrade -y kubelet=1.26.7-00
-    sudo apt-get upgrade -y kubectl=1.26.7-00
+    apt-get update && apt-get install -y kubelet=1.25.12-00 kubectl=1.25.12-00
     sudo apt-mark hold kubelet kubectl
     sudo systemctl daemon-reload
     sudo systemctl restart kubelet
     kubectl uncordon <control-plane-node-name>
 
 step 3 :
+    curl -fsSL https://dl.k8s.io/apt/doc/apt-key.gpg | sudo gpg --dearmor -o /etc/apt/keyrings/kubernetes-archive-keyring.gpg
+    echo "deb [signed-by=/etc/apt/keyrings/kubernetes-archive-keyring.gpg] https://apt.kubernetes.io/ kubernetes-xenial main" | sudo tee /etc/apt/sources.list.d/kubernetes.list
     kubectl drain <worker-node-name> --ignore-daemonsets
-    apt-mark unhold kubeadm && \
-    apt-get update && apt-get install -y kubeadm=1.26.7-00 && \
+    apt-mark unhold kubeadm
+    apt-get update && apt-get install -y kubeadm=1.25.12-00
     apt-mark hold kubeadm
 
     sudo kubeadm upgrade node
 
-    apt-mark unhold kubelet kubectl && \
-    apt-get update && \
-    apt-get install -y kubelet=1.27.x-00 && \
-    apt-get install -y kubectl=1.27.x-00 && \
+    apt-mark unhold kubelet kubectl && apt-get update && apt-get install -y kubelet=1.25.12-00 kubectl=1.25.12-00
     apt-mark hold kubelet kubectl
 
     sudo systemctl daemon-reload
